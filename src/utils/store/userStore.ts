@@ -5,6 +5,7 @@ import { useSettingsStore } from './settingsStore';
 export const useUserStore = defineStore('user', {
   state: () => ({
     user: null as User | null,
+    cart: {} as Record<string, number>,
     isAuthenticated: false,
   }),
   persist: true,
@@ -28,5 +29,30 @@ export const useUserStore = defineStore('user', {
     getIsAuthenticated() {
       return this.isAuthenticated;
     },
+    getCart() {
+      return this.cart;
+    },
+    addToCart(productId: string) {
+      this.cart[productId] = 1;
+    },
+    removeFromCart(productId: string) {
+      delete this.cart[productId];
+    }, 
+    clearCart() {
+      this.cart = {};
+    },
+    increaseQuantity(productId: string) {
+      console.log(this.cart)
+      const quantity = this.cart[productId] || 0;
+      this.cart[productId] = quantity + 1;
+    },
+    decreaseQuantity(productId: string) {
+      const quantity = this.cart[productId] || 0;
+      if (quantity > 1) {
+        this.cart[productId] = quantity - 1;
+      } else {
+        delete this.cart[productId];
+      }
+    }
   },
 });

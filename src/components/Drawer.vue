@@ -17,6 +17,9 @@
       <q-route-tab v-if="isLogged" to="/me" label="User info Page" />
       <q-route-tab v-if="!isLogged" to="/register" label="Register Page" />
       <q-route-tab v-if="isLogged" @click="logout" label="Logout" />
+      <q-route-tab v-if="!isLogged" to="/cart" label="Cart Page" >
+        <q-badge color="primary" floating>{{ cartItems }}</q-badge>
+      </q-route-tab>
     </q-tabs>
 
   </q-header>
@@ -48,6 +51,10 @@ export default {
     isLogged() {
       const userStore = useUserStore();  // Access store inside computed
       return userStore.isAuthenticated;
+    },
+    cartItems() {
+      const userStore = useUserStore();  // Access store inside computed
+      return userStore.cart.size || 0;
     },
   }
 };
